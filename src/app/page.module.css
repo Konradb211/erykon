@@ -3,6 +3,7 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	flex: 1;
 }
 .image {
 	width: 440px;
@@ -27,4 +28,13 @@
 .button:hover {
 	background-color: black;
 	color: white;
+}
+
+.footer{
+	flex-shrink: 0;
+}
+
+.copyrights{
+	text-align: center;
+	font-size: .8rem;
 }

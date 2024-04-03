@@ -19,7 +19,7 @@ export default function Home() {
 					className={styles.button}>
 					Klik
 				</button>
-				{moneyCount == 69 && <p>hehe</p>}
+				{moneyCount == 69 && <p>cojestzlinterem</p>}
 			</div>
 		</main>
 	)

@@ -33,7 +33,7 @@ export const Form = () => {
 						required: "Podaj imię",
 						minLength: {
 							value: 5,
-							message: "Nazwa użytkownika musi mieć conajmniej 3 znaki",
+							message: "Nazwa użytkownika musi mieć conajmniej 5 znaków",
 						},
 						maxLength: {
 							value: 20,
@@ -51,7 +51,10 @@ export const Form = () => {
 					id='password'
 					{...register("password", {
 						required: "Podaj hasło",
-						validate: passwordValidate,
+						pattern: {
+							value: passwordValidate,
+							message: "Podaj poprawne hasło",
+						},
 					})}
 					placeholder='Podaj hasło'
 				/>
@@ -95,9 +98,9 @@ export const Form = () => {
 						)}
 					</>
 				)}
-				<p onClick={() => setIsLogged(!isLogged)}>
+				<span onClick={() => setIsLogged(!isLogged)}>
 					{isLogged ? "Zarejestruj się!" : "Załóż Konto!"}
-				</p>
+				</span>
 				<input type='submit' />
 			</form>
 		</>

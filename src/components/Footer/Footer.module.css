@@ -1,0 +1,8 @@
+.footer {
+	flex-shrink: 0;
+}
+
+.copyrights {
+	text-align: center;
+	font-size: 0.8rem;
+}

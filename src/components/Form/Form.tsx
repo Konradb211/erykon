@@ -1,54 +1,110 @@
 "use client"
 import { useState } from "react"
-import ReactDOM from "react-dom"
-import { useForm, SubmitHandler } from "react-hook-form"
+import { SubmitHandler, useForm } from "react-hook-form"
+import { passwordValidate, emailValidate } from "@/Utils/Regexp"
+import styles from "./Form.module.css"
 
 interface IFormInput {
-	nickname: string
+	username: string
 	password: string
+	repeatPassword: string
 	email: string
 }
-
-
 export const Form = () => {
-	const { register, handleSubmit } = useForm<IFormInput>()
-	const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data)
-	const [isLogin, setisLogin] = useState(true)
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+		getValues,
+	} = useForm<IFormInput>()
+	const onSubmit: SubmitHandler<IFormInput> = data => console.log(data)
+	const [isLogged, setIsLogged] = useState(false)
+
 	return (
 		<>
-			{isLogin && (
-				<form onSubmit={handleSubmit(onSubmit)}>
-					<label htmlFor="Nickname">
-						Nazwa użytkownika
-						<input {...register("nickname")} />
-					</label>
-					<label htmlFor="Password">
-						Hasło
-						<input type="password" {...register("password")} />
-					</label>
-					<input type="submit" value="Login" />
-					<p>Potrzebujesz konta?</p>
+			<div className={styles.container}>
+				<form
+					className={styles['form-container']}
+					onSubmit={handleSubmit(onSubmit)}
+					noValidate>
+					<label htmlFor='username'>Nazwa użtykownika</label>
+					<input
+						id='username'
+						{...register("username", {
+							required: "Podaj imię",
+							minLength: {
+								value: 5,
+								message: "Nazwa użytkownika musi mieć conajmniej 5 znaków",
+							},
+							maxLength: {
+								value: 20,
+								message: "Nazwa użytkownika może mieć maksymalnie 20 znaków",
+							},
+						})}
+						placeholder='Nazwa użytkownika'
+					/>
+					{errors.username && (
+						<span className={styles['form-success']}>{errors.username.message}</span>
+					)}
+					<label htmlFor='password'>Hasło</label>
+					<input
+						type='password'
+						id='password'
+						{...register("password", {
+							required: "Podaj hasło",
+							pattern: {
+								value: passwordValidate,
+								message: "Podaj poprawne hasło",
+							},
+						})}
+						placeholder='Podaj hasło'
+					/>
+					{errors.password && (
+						<span className={styles['form-error']}>{errors.password.message}</span>
+					)}
+					{isLogged && (
+						<>
+							<label htmlFor='repeatPassword'>Powtórz hasło</label>
+							<input
+								type='password'
+								id='repeatPassword'
+								{...register("repeatPassword", {
+									required: "Potwierdzenie hasła jest wymagane",
+									validate: value =>
+										value === getValues("password") ||
+										"Hasła muszą być takie same",
+								})}
+								placeholder='Potwierdź hasło'
+							/>
+							{errors.repeatPassword && (
+								<span className={styles['form-error']}>
+									{errors.repeatPassword.message}
+								</span>
+							)}
+							<label htmlFor='email'>Podaj adres email</label>
+							<input
+								id='email'
+								type='email'
+								{...register("email", {
+									required: "Podaj adres email",
+									pattern: {
+										value: emailValidate,
+										message: "Podaj poprawny adres email",
+									},
+								})}
+								placeholder='Adres e-mail'
+							/>
+							{errors.email && (
+								<span className={styles['form-error']}>{errors.email.message}</span>
+							)}
+						</>
+					)}
+					<span onClick={() => setIsLogged(!isLogged)}>
+						{isLogged ? "Zarejestruj się!" : "Załóż Konto!"}
+					</span>
+					<input type='submit' />
 				</form>
-			)}
-			{!isLogin && (
-				<form onSubmit={handleSubmit(onSubmit)}>
-					<label htmlFor="Nickname">
-						Nazwa użytkownika
-						<input {...register("nickname")} />
-					</label>
-					<label htmlFor="Password">
-						Hasło
-						<input type="password" {...register("password")} />
-					</label>
-					<label htmlFor="Email">
-						Email
-						<input type="email" {...register("email")} />
-					</label>
-					<input type="submit" value="Rejestracja" />
-					<p>Masz już konto?</p>
-				</form>
-			)}
-			<button onClick={() => setisLogin(!isLogin) }>{isLogin ? `Zarejestruj!` : `Zaloguj się!`}</button>
+			</div>
 		</>
 	)
 }

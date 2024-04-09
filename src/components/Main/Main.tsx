@@ -4,7 +4,7 @@ export const Main = () => {
 	return (
 		<main className={styles.main}>
 			<h1>Erykon</h1>
-			<Form/>
+			<Form />
 		</main>
 	)
 }

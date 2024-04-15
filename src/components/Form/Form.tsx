@@ -1,7 +1,7 @@
 "use client"
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { passwordValidate, emailValidate } from "@/Utils/Regexp"
+import { passwordValidate, emailValidate } from "@/Utils/Regex"
 import styles from "./Form.module.css"
 
 interface IFormInput {
@@ -23,11 +23,16 @@ export const Form = () => {
 	return (
 		<>
 			<div className={styles.container}>
+				<h2 className={styles.title}>
+					{!isLogged ? "Logowanie" : "Rejestracja"}
+				</h2>
 				<form
-					className={styles['form-container']}
+					className={styles["form-container"]}
 					onSubmit={handleSubmit(onSubmit)}
 					noValidate>
-					<label htmlFor='username'>Nazwa użtykownika</label>
+					<label className={styles["form-title"]} htmlFor='username'>
+						Nazwa użtykownika
+					</label>
 					<input
 						id='username'
 						{...register("username", {
@@ -44,9 +49,13 @@ export const Form = () => {
 						placeholder='Nazwa użytkownika'
 					/>
 					{errors.username && (
-						<span className={styles['form-success']}>{errors.username.message}</span>
+						<span className={styles["form-success"]}>
+							{errors.username.message}
+						</span>
 					)}
-					<label htmlFor='password'>Hasło</label>
+					<label className={styles["form-title"]} htmlFor='password'>
+						Hasło
+					</label>
 					<input
 						type='password'
 						id='password'
@@ -60,11 +69,15 @@ export const Form = () => {
 						placeholder='Podaj hasło'
 					/>
 					{errors.password && (
-						<span className={styles['form-error']}>{errors.password.message}</span>
+						<span className={styles["form-error"]}>
+							{errors.password.message}
+						</span>
 					)}
 					{isLogged && (
 						<>
-							<label htmlFor='repeatPassword'>Powtórz hasło</label>
+							<label className={styles["form-title"]} htmlFor='repeatPassword'>
+								Powtórz hasło
+							</label>
 							<input
 								type='password'
 								id='repeatPassword'
@@ -77,11 +90,13 @@ export const Form = () => {
 								placeholder='Potwierdź hasło'
 							/>
 							{errors.repeatPassword && (
-								<span className={styles['form-error']}>
+								<span className={styles["form-error"]}>
 									{errors.repeatPassword.message}
 								</span>
 							)}
-							<label htmlFor='email'>Podaj adres email</label>
+							<label className={styles["form-title"]} htmlFor='email'>
+								Podaj adres email
+							</label>
 							<input
 								id='email'
 								type='email'
@@ -95,14 +110,23 @@ export const Form = () => {
 								placeholder='Adres e-mail'
 							/>
 							{errors.email && (
-								<span className={styles['form-error']}>{errors.email.message}</span>
+								<span className={styles["form-error"]}>
+									{errors.email.message}
+								</span>
 							)}
 						</>
 					)}
-					<span onClick={() => setIsLogged(!isLogged)}>
-						{isLogged ? "Zarejestruj się!" : "Załóż Konto!"}
+
+					<button className={styles["fancy-register-button"]} type='submit'>
+						{!isLogged ? "Zaloguj się" : "Zarejestruj się"}
+					</button>
+					<span
+						className={styles["form-title"]}
+						onClick={() => setIsLogged(!isLogged)}>
+						{isLogged
+							? "Masz już konto? zaloguj się!"
+							: "Nie masz konta? dołącz do nas!"}
 					</span>
-					<input type='submit' />
 				</form>
 			</div>
 		</>
